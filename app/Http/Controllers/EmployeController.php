@@ -58,5 +58,29 @@ class EmployeController extends Controller
         }
     }
 
+    public function enable(Request $request)
+    {
+        $employe = Employe::findOrFail($request->id);
+        $employe->active = true;
+        $employe->save();
+        return $employe;
+    }
+    public function disable(Request $request)
+    {
+        $employe = Employe::findOrFail($request->id);
+        $employe->active = false;
+        $employe->save();
+        return response()->json("disabled");
+    }
 
+    public function delete(Request $request)
+    {
+        try {
+        $employe = Employe::findOrFail($request->id);
+        $employe->active = true;
+        $employe->delete();
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
 }

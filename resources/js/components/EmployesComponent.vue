@@ -45,7 +45,7 @@
                     <button
                       type="button"
                       class="btn btn-danger btn-sm"
-
+                      @click="deleteEmploye(employe.id)"
                     >
                       <i class="icon-trash">Eliminar</i></button
                     >&nbsp;
@@ -53,7 +53,7 @@
                       <button
                         type="button"
                         class="btn btn-secondary btn-sm"
-
+                        @click="disableEmploye(employe.id)"
                       >
                         <i class="icon-close">Desactivar</i>
                       </button>
@@ -62,7 +62,7 @@
                       <button
                         type="button"
                         class="btn btn-info btn-sm"
-
+                        @click="enableEmploye(employe.id)"
                       >
                         <i class="icon-check">Activar</i>
                       </button>
@@ -525,6 +525,115 @@ export default {
         .catch(function (error) {
           console.table(error);
         });
+    },
+    disableEmploye(id) {
+      swal({
+        title: "Esta seguro de desactivar este empleado",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Aceptar!",
+        cancelButtonText: "Cancelar",
+        confirmButtonClass: "btn btn-success",
+        cancelButtonClass: "btn btn-danger",
+        buttonsStyling: false,
+        reverseButtons: true,
+      }).then((result) => {
+        if (result == true) {
+          let me = this;
+          axios
+            .patch("/employes/disable", {
+              id: id,
+            })
+            .then(function (response) {
+              me.listEmployes();
+              swal("Desactivado!", "Registro desactivado con éxito", "success");
+            })
+            .catch(function (error) {
+              me.listEmployes();
+              console.table(error);
+            });
+        } else if (
+          // Read more about handling dismissals
+          result.dismiss === swal.DismissReason.cancel
+        ) {
+        }
+      });
+    },
+    enableEmploye(id) {
+      swal({
+        //mostrar alesta de confirmacion son sweet alers
+        title: "Esta seguro de activar este empleado?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Aceptar!",
+        cancelButtonText: "Cancelar",
+        confirmButtonClass: "btn btn-success",
+        cancelButtonClass: "btn btn-danger",
+        buttonsStyling: false,
+        reverseButtons: true,
+      }).then((result) => {
+        console.log(result);
+        if (result == true) {
+          let me = this;
+          axios
+            .patch("/employes/enable", {
+              id: id,
+            })
+            .then(function (response) {
+              me.listEmployes();
+              swal(
+                "Activado!",
+                "El registro ha sido activado con éxito.",
+                "success"
+              );
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        } else if (result.dismiss === swal.DismissReason.cancel) {
+        }
+      });
+    },
+
+    deleteEmploye(id) {
+      swal({
+        //mostrar alesta de confirmacion son sweet alers
+        title: "Esta seguro de eliminar definitivamente este empleado?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Aceptar!",
+        cancelButtonText: "Cancelar",
+        confirmButtonClass: "btn btn-success",
+        cancelButtonClass: "btn btn-danger",
+        buttonsStyling: false,
+        reverseButtons: true,
+      }).then((result) => {
+        if (result == true) {
+          let me = this;
+          axios
+            .put("/employes/delete", {
+              id: id,
+            })
+            .then(function (response) {
+              me.listEmployes();
+              swal(
+                "Eliminado!",
+                "El registro ha sido eliminado con éxito.",
+                "success"
+              );
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        } else if (result.dismiss === swal.DismissReason.cancel) {
+        }
+      });
     },
 
     closeModal() {

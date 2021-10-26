@@ -2585,6 +2585,99 @@ __webpack_require__.r(__webpack_exports__);
         console.table(error);
       });
     },
+    disableEmploye: function disableEmploye(id) {
+      var _this = this;
+
+      swal({
+        title: "Esta seguro de desactivar este empleado",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Aceptar!",
+        cancelButtonText: "Cancelar",
+        confirmButtonClass: "btn btn-success",
+        cancelButtonClass: "btn btn-danger",
+        buttonsStyling: false,
+        reverseButtons: true
+      }).then(function (result) {
+        if (result == true) {
+          var me = _this;
+          axios.patch("/employes/disable", {
+            id: id
+          }).then(function (response) {
+            me.listEmployes();
+            swal("Desactivado!", "Registro desactivado con éxito", "success");
+          })["catch"](function (error) {
+            me.listEmployes();
+            console.table(error);
+          });
+        } else if ( // Read more about handling dismissals
+        result.dismiss === swal.DismissReason.cancel) {}
+      });
+    },
+    enableEmploye: function enableEmploye(id) {
+      var _this2 = this;
+
+      swal({
+        //mostrar alesta de confirmacion son sweet alers
+        title: "Esta seguro de activar este empleado?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Aceptar!",
+        cancelButtonText: "Cancelar",
+        confirmButtonClass: "btn btn-success",
+        cancelButtonClass: "btn btn-danger",
+        buttonsStyling: false,
+        reverseButtons: true
+      }).then(function (result) {
+        console.log(result);
+
+        if (result == true) {
+          var me = _this2;
+          axios.patch("/employes/enable", {
+            id: id
+          }).then(function (response) {
+            me.listEmployes();
+            swal("Activado!", "El registro ha sido activado con éxito.", "success");
+          })["catch"](function (error) {
+            console.log(error);
+          });
+        } else if (result.dismiss === swal.DismissReason.cancel) {}
+      });
+    },
+    deleteEmploye: function deleteEmploye(id) {
+      var _this3 = this;
+
+      swal({
+        //mostrar alesta de confirmacion son sweet alers
+        title: "Esta seguro de eliminar definitivamente este empleado?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Aceptar!",
+        cancelButtonText: "Cancelar",
+        confirmButtonClass: "btn btn-success",
+        cancelButtonClass: "btn btn-danger",
+        buttonsStyling: false,
+        reverseButtons: true
+      }).then(function (result) {
+        if (result == true) {
+          var me = _this3;
+          axios.put("/employes/delete", {
+            id: id
+          }).then(function (response) {
+            me.listEmployes();
+            swal("Eliminado!", "El registro ha sido eliminado con éxito.", "success");
+          })["catch"](function (error) {
+            console.log(error);
+          });
+        } else if (result.dismiss === swal.DismissReason.cancel) {}
+      });
+    },
     closeModal: function closeModal() {
       //Cerrar modals
       this.modal = 0;
@@ -41920,11 +42013,65 @@ var render = function () {
                               _vm._v(
                                 "\n                   \n                  "
                               ),
-                              _vm._m(1, true),
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-danger btn-sm",
+                                  attrs: { type: "button" },
+                                  on: {
+                                    click: function ($event) {
+                                      return _vm.deleteEmploye(employe.id)
+                                    },
+                                  },
+                                },
+                                [
+                                  _c("i", { staticClass: "icon-trash" }, [
+                                    _vm._v("Eliminar"),
+                                  ]),
+                                ]
+                              ),
                               _vm._v(" \n                  "),
                               employe.active
-                                ? [_vm._m(2, true)]
-                                : [_vm._m(3, true)],
+                                ? [
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass: "btn btn-secondary btn-sm",
+                                        attrs: { type: "button" },
+                                        on: {
+                                          click: function ($event) {
+                                            return _vm.disableEmploye(
+                                              employe.id
+                                            )
+                                          },
+                                        },
+                                      },
+                                      [
+                                        _c("i", { staticClass: "icon-close" }, [
+                                          _vm._v("Desactivar"),
+                                        ]),
+                                      ]
+                                    ),
+                                  ]
+                                : [
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass: "btn btn-info btn-sm",
+                                        attrs: { type: "button" },
+                                        on: {
+                                          click: function ($event) {
+                                            return _vm.enableEmploye(employe.id)
+                                          },
+                                        },
+                                      },
+                                      [
+                                        _c("i", { staticClass: "icon-check" }, [
+                                          _vm._v("Activar"),
+                                        ]),
+                                      ]
+                                    ),
+                                  ],
                               _vm._v(" "),
                               _c(
                                 "button",
@@ -42874,36 +43021,6 @@ var staticRenderFns = [
         _c("th", [_vm._v("Activo")]),
       ]),
     ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      { staticClass: "btn btn-danger btn-sm", attrs: { type: "button" } },
-      [_c("i", { staticClass: "icon-trash" }, [_vm._v("Eliminar")])]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      { staticClass: "btn btn-secondary btn-sm", attrs: { type: "button" } },
-      [_c("i", { staticClass: "icon-close" }, [_vm._v("Desactivar")])]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      { staticClass: "btn btn-info btn-sm", attrs: { type: "button" } },
-      [_c("i", { staticClass: "icon-check" }, [_vm._v("Activar")])]
-    )
   },
 ]
 render._withStripped = true

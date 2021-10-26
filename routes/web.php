@@ -21,4 +21,6 @@ Route::get('/', function () {
 Route::post('/employes',[EmployeController::class,'create']);
 Route::get('/employes',[EmployeController::class,'index']);
 Route::put('/employes',[EmployeController::class,'update']);
-
+Route::put('/employes/delete',[EmployeController::class,'delete']);
+Route::patch('/employes/enable',[EmployeController::class,'enable']);
+Route::patch('/employes/disable',[EmployeController::class,'disable']);
