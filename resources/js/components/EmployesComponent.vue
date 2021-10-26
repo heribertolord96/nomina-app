@@ -283,10 +283,11 @@
         :class="{ mostrar: modal }"
         role="dialog"
         aria-labelledby="myModalLabel"
-        style="display: none"
+        style="display: none; overflow-y: hidden;"
         aria-hidden="true"
+
       >
-        <div class="modal-dialog modal-primary modal-lg" role="document">
+        <div class="modal-dialog modal-primary modal-lg" role="document"  style="padding-top: 55px">
           <div class="modal-content">
             <div class="modal-header">
               <h4 class="modal-title" v-text="modalTitle"></h4>
@@ -308,69 +309,33 @@
                       <tr></tr>
                       <tr>
                         <th>A. Paterno</th>
-                        <td>
-                          <input
-                            type="text"
-                            v-model="first_last_name"
-                            class="form-control"
-                            readonly
-                          />
+                        <td v-text="first_last_name">
                         </td>
                       </tr>
                       <tr></tr>
                       <tr>
                         <th>A. Materno</th>
-                        <td>
-                          <input
-                            type="text"
-                            v-model="second_lastname"
-                            class="form-control"
-                            readonly
-                          />
+                        <td  v-text="second_lastname">
                         </td>
                       </tr>
                       <tr>
                         <th>Nombre</th>
-                        <td>
-                          <input
-                            type="text"
-                            v-model="name"
-                            class="form-control"
-                            readonly
-                          />
+                        <td v-text="name">
                         </td>
                       </tr>
                       <tr>
                         <th>Código</th>
-                        <td>
-                          <input
-                            type="text"
-                            v-model="code"
-                            class="form-control"
-                            readonly
-                          />
+                        <td  v-text="code">
                         </td>
                       </tr>
                       <tr>
                         <th>Email</th>
-                        <td>
-                          <input
-                            type="text"
-                            v-model="email"
-                            class="form-control"
-                            readonly
-                          />
+                        <td  v-text="email">
                         </td>
                       </tr>
                       <tr>
                         <th>Tipo de contrato</th>
-                        <td>
-                          <input
-                            type="text"
-                            v-model="contract_type"
-                            class="form-control"
-                            readonly
-                          />
+                        <td  v-text="contract_type">
                         </td>
                       </tr>
                       <tr>

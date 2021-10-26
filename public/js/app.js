@@ -2458,41 +2458,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -42629,7 +42594,7 @@ var render = function () {
               {
                 staticClass: "modal fade",
                 class: { mostrar: _vm.modal },
-                staticStyle: { display: "none" },
+                staticStyle: { display: "none", "overflow-y": "hidden" },
                 attrs: {
                   tabindex: "-1",
                   role: "dialog",
@@ -42642,6 +42607,7 @@ var render = function () {
                   "div",
                   {
                     staticClass: "modal-dialog modal-primary modal-lg",
+                    staticStyle: { "padding-top": "55px" },
                     attrs: { role: "document" },
                   },
                   [
@@ -42703,35 +42669,13 @@ var render = function () {
                                       _c("tr", [
                                         _c("th", [_vm._v("A. Paterno")]),
                                         _vm._v(" "),
-                                        _c("td", [
-                                          _c("input", {
-                                            directives: [
-                                              {
-                                                name: "model",
-                                                rawName: "v-model",
-                                                value: _vm.first_last_name,
-                                                expression: "first_last_name",
-                                              },
-                                            ],
-                                            staticClass: "form-control",
-                                            attrs: {
-                                              type: "text",
-                                              readonly: "",
-                                            },
-                                            domProps: {
-                                              value: _vm.first_last_name,
-                                            },
-                                            on: {
-                                              input: function ($event) {
-                                                if ($event.target.composing) {
-                                                  return
-                                                }
-                                                _vm.first_last_name =
-                                                  $event.target.value
-                                              },
-                                            },
-                                          }),
-                                        ]),
+                                        _c("td", {
+                                          domProps: {
+                                            textContent: _vm._s(
+                                              _vm.first_last_name
+                                            ),
+                                          },
+                                        }),
                                       ]),
                                       _vm._v(" "),
                                       _c("tr"),
@@ -42739,162 +42683,55 @@ var render = function () {
                                       _c("tr", [
                                         _c("th", [_vm._v("A. Materno")]),
                                         _vm._v(" "),
-                                        _c("td", [
-                                          _c("input", {
-                                            directives: [
-                                              {
-                                                name: "model",
-                                                rawName: "v-model",
-                                                value: _vm.second_lastname,
-                                                expression: "second_lastname",
-                                              },
-                                            ],
-                                            staticClass: "form-control",
-                                            attrs: {
-                                              type: "text",
-                                              readonly: "",
-                                            },
-                                            domProps: {
-                                              value: _vm.second_lastname,
-                                            },
-                                            on: {
-                                              input: function ($event) {
-                                                if ($event.target.composing) {
-                                                  return
-                                                }
-                                                _vm.second_lastname =
-                                                  $event.target.value
-                                              },
-                                            },
-                                          }),
-                                        ]),
+                                        _c("td", {
+                                          domProps: {
+                                            textContent: _vm._s(
+                                              _vm.second_lastname
+                                            ),
+                                          },
+                                        }),
                                       ]),
                                       _vm._v(" "),
                                       _c("tr", [
                                         _c("th", [_vm._v("Nombre")]),
                                         _vm._v(" "),
-                                        _c("td", [
-                                          _c("input", {
-                                            directives: [
-                                              {
-                                                name: "model",
-                                                rawName: "v-model",
-                                                value: _vm.name,
-                                                expression: "name",
-                                              },
-                                            ],
-                                            staticClass: "form-control",
-                                            attrs: {
-                                              type: "text",
-                                              readonly: "",
-                                            },
-                                            domProps: { value: _vm.name },
-                                            on: {
-                                              input: function ($event) {
-                                                if ($event.target.composing) {
-                                                  return
-                                                }
-                                                _vm.name = $event.target.value
-                                              },
-                                            },
-                                          }),
-                                        ]),
+                                        _c("td", {
+                                          domProps: {
+                                            textContent: _vm._s(_vm.name),
+                                          },
+                                        }),
                                       ]),
                                       _vm._v(" "),
                                       _c("tr", [
                                         _c("th", [_vm._v("Código")]),
                                         _vm._v(" "),
-                                        _c("td", [
-                                          _c("input", {
-                                            directives: [
-                                              {
-                                                name: "model",
-                                                rawName: "v-model",
-                                                value: _vm.code,
-                                                expression: "code",
-                                              },
-                                            ],
-                                            staticClass: "form-control",
-                                            attrs: {
-                                              type: "text",
-                                              readonly: "",
-                                            },
-                                            domProps: { value: _vm.code },
-                                            on: {
-                                              input: function ($event) {
-                                                if ($event.target.composing) {
-                                                  return
-                                                }
-                                                _vm.code = $event.target.value
-                                              },
-                                            },
-                                          }),
-                                        ]),
+                                        _c("td", {
+                                          domProps: {
+                                            textContent: _vm._s(_vm.code),
+                                          },
+                                        }),
                                       ]),
                                       _vm._v(" "),
                                       _c("tr", [
                                         _c("th", [_vm._v("Email")]),
                                         _vm._v(" "),
-                                        _c("td", [
-                                          _c("input", {
-                                            directives: [
-                                              {
-                                                name: "model",
-                                                rawName: "v-model",
-                                                value: _vm.email,
-                                                expression: "email",
-                                              },
-                                            ],
-                                            staticClass: "form-control",
-                                            attrs: {
-                                              type: "text",
-                                              readonly: "",
-                                            },
-                                            domProps: { value: _vm.email },
-                                            on: {
-                                              input: function ($event) {
-                                                if ($event.target.composing) {
-                                                  return
-                                                }
-                                                _vm.email = $event.target.value
-                                              },
-                                            },
-                                          }),
-                                        ]),
+                                        _c("td", {
+                                          domProps: {
+                                            textContent: _vm._s(_vm.email),
+                                          },
+                                        }),
                                       ]),
                                       _vm._v(" "),
                                       _c("tr", [
                                         _c("th", [_vm._v("Tipo de contrato")]),
                                         _vm._v(" "),
-                                        _c("td", [
-                                          _c("input", {
-                                            directives: [
-                                              {
-                                                name: "model",
-                                                rawName: "v-model",
-                                                value: _vm.contract_type,
-                                                expression: "contract_type",
-                                              },
-                                            ],
-                                            staticClass: "form-control",
-                                            attrs: {
-                                              type: "text",
-                                              readonly: "",
-                                            },
-                                            domProps: {
-                                              value: _vm.contract_type,
-                                            },
-                                            on: {
-                                              input: function ($event) {
-                                                if ($event.target.composing) {
-                                                  return
-                                                }
-                                                _vm.contract_type =
-                                                  $event.target.value
-                                              },
-                                            },
-                                          }),
-                                        ]),
+                                        _c("td", {
+                                          domProps: {
+                                            textContent: _vm._s(
+                                              _vm.contract_type
+                                            ),
+                                          },
+                                        }),
                                       ]),
                                       _vm._v(" "),
                                       _c("tr", [
