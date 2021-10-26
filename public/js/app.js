@@ -2493,71 +2493,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -2572,7 +2507,9 @@ __webpack_require__.r(__webpack_exports__);
       modal: 0,
       modalTitle: "",
       actionType: 0,
-      arrayEmployes: []
+      arrayEmployes: [],
+      submitted: false,
+      errors: {}
     };
   },
   mounted: function mounted() {
@@ -2591,6 +2528,15 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     createEmploye: function createEmploye() {
+      this.submitted = true;
+      this.errors = {};
+      this.valideForm();
+      console.log(Object.keys(this.errors));
+
+      if (Object.keys(this.errors).length) {
+        return;
+      }
+
       var me = this;
       axios.post("/employes", {
         name: this.name,
@@ -2604,10 +2550,24 @@ __webpack_require__.r(__webpack_exports__);
         me.closeModal();
         me.listEmployes();
       })["catch"](function (error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lo sentimos...',
+          text: 'Los datos enviados no son validos!'
+        });
         console.table(error);
       });
     },
     updateEmploye: function updateEmploye() {
+      this.submitted = true;
+      this.errors = {};
+      this.valideForm();
+      console.log(Object.keys(this.errors));
+
+      if (Object.keys(this.errors).length) {
+        return;
+      }
+
       var me = this;
       axios.put("/employes", {
         name: this.name,
@@ -2625,103 +2585,59 @@ __webpack_require__.r(__webpack_exports__);
         console.table(error);
       });
     },
-    disableEmploye: function disableEmploye(id) {
-      var _this = this;
-
-      swal({
-        title: "Esta seguro de desactivar este empleado",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Aceptar!",
-        cancelButtonText: "Cancelar",
-        confirmButtonClass: "btn btn-success",
-        cancelButtonClass: "btn btn-danger",
-        buttonsStyling: false,
-        reverseButtons: true
-      }).then(function (result) {
-        if (result == true) {
-          var me = _this;
-          axios.patch("/employes/disable", {
-            id: id
-          }).then(function (response) {
-            me.listEmployes();
-            swal("Desactivado!", "Registro desactivado con éxito", "success");
-          })["catch"](function (error) {
-            me.listEmployes();
-            console.table(error);
-          });
-        } else if ( // Read more about handling dismissals
-        result.dismiss === swal.DismissReason.cancel) {}
-      });
-    },
-    enableEmploye: function enableEmploye(id) {
-      var _this2 = this;
-
-      swal({
-        //mostrar alesta de confirmacion son sweet alers
-        title: "Esta seguro de activar este empleado?",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Aceptar!",
-        cancelButtonText: "Cancelar",
-        confirmButtonClass: "btn btn-success",
-        cancelButtonClass: "btn btn-danger",
-        buttonsStyling: false,
-        reverseButtons: true
-      }).then(function (result) {
-        console.log(result);
-
-        if (result == true) {
-          var me = _this2;
-          axios.patch("/employes/enable", {
-            id: id
-          }).then(function (response) {
-            me.listEmployes();
-            swal("Activado!", "El registro ha sido activado con éxito.", "success");
-          })["catch"](function (error) {
-            console.log(error);
-          });
-        } else if (result.dismiss === swal.DismissReason.cancel) {}
-      });
-    },
-    deleteEmploye: function deleteEmploye(id) {
-      var _this3 = this;
-
-      swal({
-        //mostrar alesta de confirmacion son sweet alers
-        title: "Esta seguro de eliminar definitivamente este empleado?",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Aceptar!",
-        cancelButtonText: "Cancelar",
-        confirmButtonClass: "btn btn-success",
-        cancelButtonClass: "btn btn-danger",
-        buttonsStyling: false,
-        reverseButtons: true
-      }).then(function (result) {
-        if (result == true) {
-          var me = _this3;
-          axios.put("/employes/delete", {
-            id: id
-          }).then(function (response) {
-            me.listEmployes();
-            swal("Eliminado!", "El registro ha sido eliminado con éxito.", "success");
-          })["catch"](function (error) {
-            console.log(error);
-          });
-        } else if (result.dismiss === swal.DismissReason.cancel) {}
-      });
-    },
     closeModal: function closeModal() {
       //Cerrar modals
       this.modal = 0;
       this.name = "", this.first_last_name = "", this.second_lastname = "", this.email = "", this.contract_type = "", this.code = "", this.active = false;
+      this.submitted = false;
+      this.errors = {};
+      this.listEmployes();
+    },
+    valideForm: function valideForm() {
+      if (!this.code) {
+        this.errors.code = "El código es un campo requerido";
+      }
+
+      if (!this.name) {
+        this.errors.name = "El nombre es un campo requerido";
+      }
+
+      this.validateField('name');
+
+      if (!this.first_last_name) {
+        this.errors.first_last_name = "El apellido paterno es un campo requerido";
+      }
+
+      this.validateField("first_last_name");
+
+      if (!this.second_lastname) {
+        this.errors.second_lastname = "El apellido materno es un campo requerido";
+      }
+
+      this.validateField("second_lastname");
+
+      if (!this.email) {
+        this.errors.email = "El correo electrónico es un campo requerido";
+      }
+
+      this.validateField("email");
+
+      if (!this.contract_type) {
+        this.errors.contract_type = "El tipo de contrato es un campo requerido";
+      }
+    },
+    validateField: function validateField(field) {
+      if (field === "email") {
+        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.email)) {
+          this.errors.email = "Please enter a valid email address";
+        }
+
+        return;
+      }
+
+      if (!/^[A-Za-z\u00C0-\u00FF\-\_]*$/i.test(this.field)) {
+        this.errors[field] = "El campo ".concat(field, " solo admite letras y guiones");
+      }
     },
     openModal: function openModal(model, action) {
       var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
@@ -7305,7 +7221,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.modal-content {\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar {\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #3c29297a !important;\n}\n.div-error {\n    display: flex;\n    justify-content: center;\n}\n.text-error {\n    color: red !important;\n    font-weight: bold;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.modal-content {\n  width: 100% !important;\n  position: absolute !important;\n}\n.mostrar {\n  display: list-item !important;\n  opacity: 1 !important;\n  position: absolute !important;\n  background-color: #3c29297a !important;\n}\n.div-error {\n  display: flex;\n  justify-content: center;\n}\n.text-error {\n  color: red !important;\n  font-weight: bold;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -41941,7 +41857,7 @@ var render = function () {
         _c("div", { staticClass: "card" }, [
           _c("div", { staticClass: "card-header" }, [
             _c("i", { staticClass: "fa fa-align-justify" }),
-            _vm._v(" Empleados\n                "),
+            _vm._v(" Empleados\n        "),
             _c(
               "button",
               {
@@ -41955,7 +41871,7 @@ var render = function () {
               },
               [
                 _c("i", { staticClass: "icon-plus" }),
-                _vm._v(" Nuevo\n                "),
+                _vm._v(" Nuevo\n        "),
               ]
             ),
           ]),
@@ -42002,67 +41918,13 @@ var render = function () {
                                 ]
                               ),
                               _vm._v(
-                                "\n                                     \n                                    "
+                                "\n                   \n                  "
                               ),
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "btn btn-danger btn-sm",
-                                  attrs: { type: "button" },
-                                  on: {
-                                    click: function ($event) {
-                                      return _vm.deleteEmploye(employe.id)
-                                    },
-                                  },
-                                },
-                                [
-                                  _c("i", { staticClass: "icon-trash" }, [
-                                    _vm._v("Eliminar"),
-                                  ]),
-                                ]
-                              ),
-                              _vm._v(" \n                                    "),
+                              _vm._m(1, true),
+                              _vm._v(" \n                  "),
                               employe.active
-                                ? [
-                                    _c(
-                                      "button",
-                                      {
-                                        staticClass: "btn btn-secondary btn-sm",
-                                        attrs: { type: "button" },
-                                        on: {
-                                          click: function ($event) {
-                                            return _vm.disableEmploye(
-                                              employe.id
-                                            )
-                                          },
-                                        },
-                                      },
-                                      [
-                                        _c("i", { staticClass: "icon-close" }, [
-                                          _vm._v("Desactivar"),
-                                        ]),
-                                      ]
-                                    ),
-                                  ]
-                                : [
-                                    _c(
-                                      "button",
-                                      {
-                                        staticClass: "btn btn-info btn-sm",
-                                        attrs: { type: "button" },
-                                        on: {
-                                          click: function ($event) {
-                                            return _vm.enableEmploye(employe.id)
-                                          },
-                                        },
-                                      },
-                                      [
-                                        _c("i", { staticClass: "icon-check" }, [
-                                          _vm._v("Activar"),
-                                        ]),
-                                      ]
-                                    ),
-                                  ],
+                                ? [_vm._m(2, true)]
+                                : [_vm._m(3, true)],
                               _vm._v(" "),
                               _c(
                                 "button",
@@ -42085,9 +41947,7 @@ var render = function () {
                                   ]),
                                 ]
                               ),
-                              _vm._v(
-                                "\n                                     \n                                "
-                              ),
+                              _vm._v("\n                   \n                "),
                             ],
                             2
                           ),
@@ -42253,14 +42113,13 @@ var render = function () {
                                     },
                                   }),
                                   _vm._v(" "),
-                                  _c(
-                                    "small",
-                                    {
-                                      staticClass: "form-text text-muted",
-                                      attrs: { id: "emailHelp" },
-                                    },
-                                    [_vm._v("Ingrese su email")]
-                                  ),
+                                  _vm.submitted && _vm.errors.email
+                                    ? _c(
+                                        "small",
+                                        { staticClass: "text-danger font-14" },
+                                        [_vm._v(_vm._s(_vm.errors.email))]
+                                      )
+                                    : _vm._e(),
                                 ]),
                                 _vm._v(" "),
                                 _c("div", { staticClass: "form-group" }, [
@@ -42295,14 +42154,13 @@ var render = function () {
                                     },
                                   }),
                                   _vm._v(" "),
-                                  _c(
-                                    "small",
-                                    {
-                                      staticClass: "form-text text-muted",
-                                      attrs: { id: "textHelp" },
-                                    },
-                                    [_vm._v("Ingrese nombre o nombres")]
-                                  ),
+                                  _vm.submitted && _vm.errors.name
+                                    ? _c(
+                                        "small",
+                                        { staticClass: "text-danger font-14" },
+                                        [_vm._v(_vm._s(_vm.errors.name))]
+                                      )
+                                    : _vm._e(),
                                 ]),
                                 _vm._v(" "),
                                 _c("div", { staticClass: "form-group" }, [
@@ -42337,18 +42195,13 @@ var render = function () {
                                     },
                                   }),
                                   _vm._v(" "),
-                                  _c(
-                                    "small",
-                                    {
-                                      staticClass: "form-text text-muted",
-                                      attrs: { id: "textHelp" },
-                                    },
-                                    [
-                                      _vm._v(
-                                        "Ingrese su codigo\n                                    "
-                                      ),
-                                    ]
-                                  ),
+                                  _vm.submitted && _vm.errors.code
+                                    ? _c(
+                                        "small",
+                                        { staticClass: "text-danger font-14" },
+                                        [_vm._v(_vm._s(_vm.errors.code))]
+                                      )
+                                    : _vm._e(),
                                 ]),
                                 _vm._v(" "),
                                 _c("div", { staticClass: "form-group" }, [
@@ -42386,14 +42239,17 @@ var render = function () {
                                     },
                                   }),
                                   _vm._v(" "),
-                                  _c(
-                                    "small",
-                                    {
-                                      staticClass: "form-text text-muted",
-                                      attrs: { id: "textHelp" },
-                                    },
-                                    [_vm._v("Ingrese primer apellido")]
-                                  ),
+                                  _vm.submitted && _vm.errors.first_last_name
+                                    ? _c(
+                                        "small",
+                                        { staticClass: "text-danger font-14" },
+                                        [
+                                          _vm._v(
+                                            _vm._s(_vm.errors.first_last_name)
+                                          ),
+                                        ]
+                                      )
+                                    : _vm._e(),
                                 ]),
                                 _vm._v(" "),
                                 _c("div", { staticClass: "form-group" }, [
@@ -42431,14 +42287,17 @@ var render = function () {
                                     },
                                   }),
                                   _vm._v(" "),
-                                  _c(
-                                    "small",
-                                    {
-                                      staticClass: "form-text text-muted",
-                                      attrs: { id: "textHelp" },
-                                    },
-                                    [_vm._v("Ingrese segundo apellido")]
-                                  ),
+                                  _vm.submitted && _vm.errors.second_lastname
+                                    ? _c(
+                                        "small",
+                                        { staticClass: "text-danger font-14" },
+                                        [
+                                          _vm._v(
+                                            _vm._s(_vm.errors.second_lastname)
+                                          ),
+                                        ]
+                                      )
+                                    : _vm._e(),
                                 ]),
                                 _vm._v(" "),
                                 _c("div", { staticClass: "form-check" }, [
@@ -42539,14 +42398,17 @@ var render = function () {
                                     },
                                   }),
                                   _vm._v(" "),
-                                  _c(
-                                    "small",
-                                    {
-                                      staticClass: "form-text text-muted",
-                                      attrs: { id: "textHelp" },
-                                    },
-                                    [_vm._v("Ingrese su tipo de contrato")]
-                                  ),
+                                  _vm.submitted && _vm.errors.contract_type
+                                    ? _c(
+                                        "small",
+                                        { staticClass: "text-danger font-14" },
+                                        [
+                                          _vm._v(
+                                            _vm._s(_vm.errors.contract_type)
+                                          ),
+                                        ]
+                                      )
+                                    : _vm._e(),
                                 ]),
                               ]
                             ),
@@ -42567,11 +42429,7 @@ var render = function () {
                                   },
                                 },
                               },
-                              [
-                                _vm._v(
-                                  "\n                            Guardar\n                        "
-                                ),
-                              ]
+                              [_vm._v("\n              Guardar\n            ")]
                             )
                           : _vm._e(),
                         _vm._v(" "),
@@ -42589,7 +42447,7 @@ var render = function () {
                               },
                               [
                                 _vm._v(
-                                  "\n                            actualizar\n                        "
+                                  "\n              actualizar\n            "
                                 ),
                               ]
                             )
@@ -42607,11 +42465,7 @@ var render = function () {
                                   },
                                 },
                               },
-                              [
-                                _vm._v(
-                                  "\n                            Cerrar\n                        "
-                                ),
-                              ]
+                              [_vm._v("\n              Cerrar\n            ")]
                             )
                           : _vm._e(),
                       ]),
@@ -42709,8 +42563,7 @@ var render = function () {
                                                 name: "model",
                                                 rawName: "v-model",
                                                 value: _vm.first_last_name,
-                                                expression:
-                                                  "\n                                                        first_last_name\n                                                    ",
+                                                expression: "first_last_name",
                                               },
                                             ],
                                             staticClass: "form-control",
@@ -42746,8 +42599,7 @@ var render = function () {
                                                 name: "model",
                                                 rawName: "v-model",
                                                 value: _vm.second_lastname,
-                                                expression:
-                                                  "\n                                                        second_lastname\n                                                    ",
+                                                expression: "second_lastname",
                                               },
                                             ],
                                             staticClass: "form-control",
@@ -42947,11 +42799,7 @@ var render = function () {
                                   },
                                 },
                               },
-                              [
-                                _vm._v(
-                                  "\n                            Guardar\n                        "
-                                ),
-                              ]
+                              [_vm._v("\n              Guardar\n            ")]
                             )
                           : _vm._e(),
                         _vm._v(" "),
@@ -42969,7 +42817,7 @@ var render = function () {
                               },
                               [
                                 _vm._v(
-                                  "\n                            actualizar\n                        "
+                                  "\n              actualizar\n            "
                                 ),
                               ]
                             )
@@ -42987,11 +42835,7 @@ var render = function () {
                                   },
                                 },
                               },
-                              [
-                                _vm._v(
-                                  "\n                            Cerrar\n                        "
-                                ),
-                              ]
+                              [_vm._v("\n              Cerrar\n            ")]
                             )
                           : _vm._e(),
                       ]),
@@ -43030,6 +42874,36 @@ var staticRenderFns = [
         _c("th", [_vm._v("Activo")]),
       ]),
     ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      { staticClass: "btn btn-danger btn-sm", attrs: { type: "button" } },
+      [_c("i", { staticClass: "icon-trash" }, [_vm._v("Eliminar")])]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      { staticClass: "btn btn-secondary btn-sm", attrs: { type: "button" } },
+      [_c("i", { staticClass: "icon-close" }, [_vm._v("Desactivar")])]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      { staticClass: "btn btn-info btn-sm", attrs: { type: "button" } },
+      [_c("i", { staticClass: "icon-check" }, [_vm._v("Activar")])]
+    )
   },
 ]
 render._withStripped = true
